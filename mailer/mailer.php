@@ -6,11 +6,11 @@ require_once('mailer/Exception.php');
 require_once('mailer/PHPMailer.php');
 require_once('mailer/SMTP.php');
 
-$mailTo = "julioferreiradev@gmail.com";
+$mailTo = "user@gmail.com";
 
 $mailHost = "smtp.gmail.com";
-$mailUser = "julioferreiradev";
-$mailPass = "'jcfs1234'";
+$mailUser = "useruseruser";
+$mailPass = "dasdasd";
 $mailPort = 25;
 
 
