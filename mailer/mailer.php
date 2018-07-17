@@ -6,14 +6,18 @@
 
 
 /*CONFIG*/
-$mailTo = "user@gmail.com";
+$mailTo = "user@gmail.com"; 
 
 $mailHost = "smtp.gmail.com";
 $mailUser = "username";
 $mailPass = "password";
 $mailPort = 25;
 
-$uploadDir = '/path/to/';
+$subject  = "Automatic message."; //if isset on input hidden it will be ignored
+$fromName = "Mr. Robot";
+$fromMail = 'msrobot@gmail.com';
+
+$uploadDir = '/';
 /*END | CONFIG*/
 
 
@@ -28,7 +32,6 @@ use PHPMailer\PHPMailer\Exception;
 require_once('mailer/Exception.php');
 require_once('mailer/PHPMailer.php');
 require_once('mailer/SMTP.php');
-require_once('mailer/config.php');
 
 
 if (isset($_POST['mailer'])) {
@@ -36,15 +39,19 @@ if (isset($_POST['mailer'])) {
 	$mailer['config']		 				= (!isset($mailer['config'])		 				? array() 	: $mailer['config']);
 	$mailer['config']['label'] 				= (!isset($mailer['config']['label']) 				? array() 	: $mailer['config']['label']);
 	$mailer['config']['value'] 				= (!isset($mailer['config']['value']) 				? array() 	: $mailer['config']['value']);
+	$mailer['config']['header'] 			= (!isset($mailer['config']['header']) 				? array() 	: $mailer['config']['header']);
+	$mailer['config']['subject']			= (!isset($mailer['config']['subject'])				? $subject	: $mailer['config']['subject']);
 	$mailer['config']['separator'] 			= (!isset($mailer['config']['separator']) 			? array() 	: $mailer['config']['separator']);
 	$mailer['config']['label']['style'] 	= (!isset($mailer['config']['label']['style']) 		? "" 		: strip_tags($mailer['config']['label']['style']));
 	$mailer['config']['value']['style'] 	= (!isset($mailer['config']['value']['style']) 		? "" 		: strip_tags($mailer['config']['value']['style']));
+	$mailer['config']['header']['style'] 	= (!isset($mailer['config']['header']['style']) 	? "" 		: strip_tags($mailer['config']['header']['style']));
 	$mailer['config']['separator']['style'] = (!isset($mailer['config']['separator']['style']) 	? "" 		: strip_tags($mailer['config']['separator']['style']));
 	$mailer['config']['label']['tag'] 		= (!isset($mailer['config']['label']['tag']) 		? "b" 		: strip_tags($mailer['config']['label']['tag']));
 	$mailer['config']['value']['tag'] 		= (!isset($mailer['config']['value']['tag']) 		? "span" 	: strip_tags($mailer['config']['value']['tag']));
-	$mailer['config']['separator']['tag'] 	= (!isset($mailer['config']['separator']['tag']) 	? "span" 	: strip_tags($mailer['config']['separator']['tag']));
+	$mailer['config']['header']['tag'] 		= (!isset($mailer['config']['header']['tag']) 		? "p" 		: strip_tags($mailer['config']['header']['tag']));
 	$mailer['config']['separator']['text'] 	= (!isset($mailer['config']['separator']['text']) 	? ":" 		: strip_tags($mailer['config']['separator']['text']));
-	$mailer['msg']			 				= (!isset($mailer['msg'])			 				? array() 	: $mailer['msg']);
+	$mailer['input']			 			= (!isset($mailer['input'])			 				? array() 	: $mailer['input']);
+	$mailer['header']			 			= (!isset($mailer['header'])			 			? array() 	: $mailer['header']);
 
 
 	$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -61,12 +68,37 @@ if (isset($_POST['mailer'])) {
 	    $mail->Port = $mailPort;                                    // TCP port to connect to
 
 	    //Recipients
-	    $mail->setFrom('automatic_msg@gmail.com', 'Mailer');
+	    $mail->setFrom($fromMail, $fromName);
 	    $mail->addAddress($mailTo, 'You');     // Add a recipient
 
 		$html_msg = "";
 		$altb_msg = "";
-		foreach($mailer['msg'] as $label => $value) {
+
+
+
+
+		/*HEADER LINES*/
+		foreach($mailer['header'] as $value) {
+			$value = strip_tags($value);
+
+			// <tagHeader style="headerStyle" > headerValue <tagHeader/>
+			$html_msg .= "<" . $mailer['config']['header']['tag'] . " style='";
+			$html_msg .= $mailer['config']['header']['style'];
+			$html_msg .= "' >";
+			$html_msg .= $value;
+			$html_msg .= "</" . $mailer['config']['header']['tag'] . ">";
+
+			$html_msg .= "<br>";
+
+			$altb_msg .= $value . "\n";
+		}
+		/*END | HEADER LINES*/
+
+
+
+
+		/*INPUT LINES*/
+		foreach($mailer['input'] as $label => $value) {
 			$label = strip_tags($label);
 			$value = strip_tags($value);
 
@@ -95,15 +127,13 @@ if (isset($_POST['mailer'])) {
 
 			$altb_msg .= $label . " " . $mailer['config']['separator']['text'] . " " . $value . "\n";
 		}
+		/*END | INPUT LINES*/
 
 
+
+		/*ATTACHMENTS*/
 		if(isset($_FILES['mailer'])){
 			$mailer['config']['file']['uploadDir'] = (!isset($mailer['config']['file']['uploadDir']) ? '/' : $mailer['config']['file']['uploadDir']);
-
-			// echo "<pre>";
-			// print_r($_FILES);
-			// echo "</pre>";
-			// exit();
 
 			$html_msg .= "Arquivos em anexo: <br>";
 			$altb_msg .= "Arquivos em anexo: \n";
@@ -119,10 +149,11 @@ if (isset($_POST['mailer'])) {
 				}
 			}
 		}
+		/*END | ATTACHMENTS*/
 
 	    //Content
 	    $mail->isHTML(true);                                  // Set email format to HTML
-	    $mail->Subject = 'Nova mensagem automática';
+	    $mail->Subject = $mailer['config']['subject'];
 	    $mail->Body    = $html_msg;
 	    $mail->AltBody = $altb_msg;
 
