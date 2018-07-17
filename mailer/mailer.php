@@ -18,20 +18,16 @@ $fromName = "Mr. Robot";
 $fromMail = 'msrobot@gmail.com';
 
 $uploadDir = '/';
+$mailerPath = 'mailer/';
 /*END | CONFIG*/
-
-
-
-
-
 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once('mailer/Exception.php');
-require_once('mailer/PHPMailer.php');
-require_once('mailer/SMTP.php');
+require_once($mailerPath.'Exception.php');
+require_once($mailerPath.'PHPMailer.php');
+require_once($mailerPath.'SMTP.php');
 
 
 if (isset($_POST['mailer'])) {
