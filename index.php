@@ -17,19 +17,19 @@
 		<!-- TAGS -->
 		<input type="hidden" name="mailer[config][label][tag]" value="span" />
 		<input type="hidden" name="mailer[config][value][tag]" value="span" />
-		<input type="hidden" name="mailer[config][separator][tag]" value="span" />
 		<input type="hidden" name="mailer[config][header][tag]" value="p" />
+		<input type="hidden" name="mailer[config][separator][tag]" value="span" />
 
 		<!-- STYLES -->
 		<input type="hidden" name="mailer[config][label][style]" value="color: blue; font-size: 30px;" />
 		<input type="hidden" name="mailer[config][value][style]" value="color: gray; font-size: 20px;" />
-		<input type="hidden" name="mailer[config][separator][style]" value="color: purple; font-size: 50px;" />
 		<input type="hidden" name="mailer[config][header][style]" value="color: red; font-size: 10px;" />
+		<input type="hidden" name="mailer[config][separator][style]" value="color: purple; font-size: 50px;" />
 
 		<!-- SEPARATOR TEXT -->
 		<input type="hidden" name="mailer[config][separator][text]" value=":" />
 		
-		<!-- END|CONFIG -->
+		<!-- END | CONFIG -->
 		
 
 
