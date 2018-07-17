@@ -6,7 +6,7 @@
 
 
 /*CONFIG*/
-$mailTo = "user@gmail.com"; 
+$mailTo = "username@gmail.com"; 
 
 $mailHost = "smtp.gmail.com";
 $mailUser = "username";
@@ -131,8 +131,10 @@ if (isset($_POST['mailer'])) {
 		if(isset($_FILES['mailer'])){
 			$mailer['config']['file']['uploadDir'] = (!isset($mailer['config']['file']['uploadDir']) ? '/' : $mailer['config']['file']['uploadDir']);
 
-			$html_msg .= "Arquivos em anexo: <br>";
-			$altb_msg .= "Arquivos em anexo: \n";
+			if(!empty($files = $_FILES['mailer']['name']['file'])){
+				$html_msg .= "Arquivos em anexo: <br>";
+				$altb_msg .= "Arquivos em anexo: \n";
+			}			
 
 			$files = $_FILES['mailer']['name']['file'];
 			foreach($files as $key => $value) {
@@ -154,8 +156,8 @@ if (isset($_POST['mailer'])) {
 	    $mail->AltBody = $altb_msg;
 
 	    $mail->send();
-	    echo 'Message has been sent';
 	} catch (Exception $e) {
 	    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+	    exit();
 	}
 }
