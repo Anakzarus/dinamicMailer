@@ -1,17 +1,34 @@
-<?php 
+<?php
+
+
+
+
+
+
+/*CONFIG*/
+$mailTo = "user@gmail.com";
+
+$mailHost = "smtp.gmail.com";
+$mailUser = "username";
+$mailPass = "password";
+$mailPort = 25;
+
+$uploadDir = '/path/to/';
+/*END | CONFIG*/
+
+
+
+
+
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once('mailer/Exception.php');
 require_once('mailer/PHPMailer.php');
 require_once('mailer/SMTP.php');
-
-$mailTo = "user@gmail.com";
-
-$mailHost = "smtp.gmail.com";
-$mailUser = "useruseruser";
-$mailPass = "dasdasd";
-$mailPort = 25;
+require_once('mailer/config.php');
 
 
 if (isset($_POST['mailer'])) {
@@ -34,7 +51,7 @@ if (isset($_POST['mailer'])) {
 	$mail -> CharSet = "UTF-8";
 	try {
 	    //Server settings
-	    $mail->SMTPDebug = 1;                                 // Enable verbose debug output
+	    // $mail->SMTPDebug = 1;                                 // Enable verbose debug output
 	    $mail->isSMTP();                                      // Set mailer to use SMTP
 	    $mail->Host = $mailHost;  // Specify main and backup SMTP servers
 	    $mail->SMTPAuth = true;                               // Enable SMTP authentication
@@ -93,7 +110,7 @@ if (isset($_POST['mailer'])) {
 
 			$files = $_FILES['mailer']['name']['file'];
 			foreach($files as $key => $value) {
-				$uploaddir = $mailer['config']['file']['uploadDir'];
+				$uploaddir = $uploadDir;
 				$uploadfile = $uploaddir . basename($_FILES['mailer']['name']['file'][$key]);
 				if (move_uploaded_file($_FILES['mailer']['tmp_name']['file'][$key], $uploadfile)) {
 					$html_msg .= $key . "<br>";

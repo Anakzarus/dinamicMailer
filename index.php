@@ -22,19 +22,16 @@
 		<input type="hidden" name="mailer[config][separator][style]" value="color: purple; font-size: 50px;" />
 
 		<!-- SEPARATOR TEXT -->
-		<input type="hidden" name="mailer[config][separator][text]" value="==>" />
-
-		<!-- FILE UPLOAD DIR -->
-		<input type="hidden" name="mailer[config][file][uploadDir]" value="/" />
+		<input type="hidden" name="mailer[config][separator][text]" value=":" />
 		
 		<!-- END|CONFIG -->
 		
 
 
 		<!-- INPUTS -->
-		<label for="mailer[msg][Nome do Campo]" >
-			Nome do Campo:
-			<input type="text" name="mailer[msg][Nome do Campo]" required="true" />
+		<label for="mailer[msg][Ikeda]" >
+			Ikeda:
+			<input type="text" name="mailer[msg][Ikeda]" required="true" />
 		</label>
 		<!-- END | INPUTS -->
 
